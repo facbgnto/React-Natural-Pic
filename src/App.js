@@ -14,7 +14,7 @@ export default function App() {
  
   const [galeria, setGaleria] = useState([]);
   const globalState = { galeria, setGaleria};
-  const endpoint = "/fotos.json";
+  const endpoint = "./fotos.json";
 
   const [info, setInfo] = useState([]);
 
