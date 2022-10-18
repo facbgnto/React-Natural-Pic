@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "./styles.css";
 
-function App() {
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import { useState, useEffect } from "react";
+
+import Home from "./views/Home";
+import Favoritos from "./views/Favoritos";
+import Context from "./Context";
+
+
+export default function App() {
+ 
+  const [galeria, setGaleria] = useState([]);
+  const globalState = { galeria, setGaleria};
+  const endpoint = "/fotos.json";
+
+  const [info, setInfo] = useState([]);
+
+  useEffect(() => {
+    consultarInformacion();
+    }, []);
+
+
+   //  Función que consulta la API
+   const consultarInformacion = async () => {
+        const url = '/fotos.json';
+        const response = await fetch(url)
+        const data = await response.json()
+        setGaleria(data.photos); // con setInfoactualizamos el estado
+       
+  }
+
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Context.Provider value={ globalState }>
+
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/favoritos" element={<Favoritos />} />
+        </Routes>
+      </BrowserRouter>
+      </Context.Provider>
     </div>
   );
 }
-
-export default App;
